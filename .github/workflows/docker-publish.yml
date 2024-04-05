@@ -44,7 +44,7 @@ jobs:
           - minimal
         variant:
           - jammy
-    name: Release texlive-${{ matrix.scheme }}:${{ github.event.inputs.version }}
+    name: Build latex:${{ matrix.scheme }}-${{ matrix.variant }}
 
     steps:
       - name: Checkout repository
