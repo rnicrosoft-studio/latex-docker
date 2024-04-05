@@ -5,10 +5,11 @@ FROM buildpack-deps:${VARIANT}-curl
 
 LABEL dev.containers.features="common"
 
+RUN echo ${VARIANT} && echo $SCHEME
+
 # install additional OS packages.
 RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
     && apt-get -y install --no-install-recommends wget libfile-fcntllock-perl
-RUN echo ${SCHEME}
 
 # TeXLive
 WORKDIR /tmp
