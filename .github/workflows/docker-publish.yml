@@ -41,7 +41,7 @@ jobs:
     strategy:
       matrix:
         scheme:
-          - minimal
+          - infraonly
         variant:
           - jammy
     name: Build latex:${{ matrix.scheme }}-${{ matrix.variant }}
