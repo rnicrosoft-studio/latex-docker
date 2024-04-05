@@ -12,11 +12,9 @@ LABEL dev.containers.features="common"
 WORKDIR /tmp
 RUN wget https://mirror.ctan.org/systems/texlive/tlnet/install-tl-unx.tar.gz \
     && tar -xzf install-tl-unx.tar.gz \
-    && cd install-tl-2* \
-    sudo perl ./install-tl -scheme=${SCHEME} --no-interaction
+    && cd install-tl-2*
+RUN sudo perl ./install-tl -scheme="scheme-${SCHEME}" --no-interaction
 
-RUN ls /tmp
-RUN ls /tmp/install-tl-2*
 RUN ls /usr/local/
 RUN ls /usr/local/texlive/
 
