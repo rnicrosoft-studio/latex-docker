@@ -11,9 +11,11 @@ LABEL dev.containers.features="common"
 # TeXLive
 WORKDIR /tmp
 RUN wget https://mirror.ctan.org/systems/texlive/tlnet/install-tl-unx.tar.gz \
-    && zcat < install-tl-unx.tar.gz | tar xf - \
+    && tar -xzf install-tl-unx.tar.gz \
     && cd install-tl-2* \
     sudo perl ./install-tl -scheme=${SCHEME} --no-interaction
+
+RUN 
 
 RUN YEAR=$(ls -d /usr/local/texlive/2* | sed -e 's/.*[/]//g') \ 
     && echo MANPATH=/usr/local/texlive/$YEAR/texmf-dist/doc/man:$MANPATH >> ~/.profile \
