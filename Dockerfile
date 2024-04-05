@@ -1,11 +1,10 @@
 # [Choice] Ubuntu version (use jammy on local arm64/Apple Silicon): jammy, focal
 ARG VARIANT="jammy"
-ARG SCHEME="infraonly"
 FROM buildpack-deps:${VARIANT}-curl
 
+# ARG VARIANT="jammy"
+ARG SCHEME="infraonly"
 LABEL dev.containers.features="common"
-
-RUN echo ${VARIANT} && echo $SCHEME
 
 # install additional OS packages.
 RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
