@@ -94,9 +94,9 @@ jobs:
           context: .
           push: ${{ github.event_name != 'pull_request' }}
           tags: |
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}::${{ matrix.scheme }}
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}::${{ matrix.scheme }}-${{ steps.meta.outputs.tags }}
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}::${{ matrix.scheme }}-${{ steps.meta.outputs.tags }}-${{ matrix.variant }}
+            ${{ env.IMAGE_NAME }}:${{ matrix.scheme }}
+            ${{ env.IMAGE_NAME }}:${{ matrix.scheme }}-${{ steps.meta.outputs.tags }}
+            ${{ env.IMAGE_NAME }}:${{ matrix.scheme }}-${{ steps.meta.outputs.tags }}-${{ matrix.variant }}
           build-args: |
             variant=${{ matrix.variant }}
             scheme=${{ matrix.scheme }}
