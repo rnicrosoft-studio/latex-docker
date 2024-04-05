@@ -95,8 +95,8 @@ jobs:
           push: ${{ github.event_name != 'pull_request' }}
           tags: |
             ${{ env.IMAGE_NAME }}:${{ matrix.scheme }}
-            ${{ env.IMAGE_NAME }}:${{ matrix.scheme }}-${{ steps.meta.outputs.tags }}
-            ${{ env.IMAGE_NAME }}:${{ matrix.scheme }}-${{ steps.meta.outputs.tags }}-${{ matrix.variant }}
+            ${{ env.IMAGE_NAME }}:${{ steps.meta.outputs.tags }}-${{ matrix.scheme }}
+            ${{ env.IMAGE_NAME }}:${{ steps.meta.outputs.tags }}-${{ matrix.scheme }}-${{ matrix.variant }}
           build-args: |
             variant=${{ matrix.variant }}
             scheme=${{ matrix.scheme }}
