@@ -44,7 +44,7 @@ jobs:
           - infraonly
         variant:
           - jammy
-    name: Build latex:${{ matrix.scheme }}-${{ matrix.variant }}
+    name: Build latex:${{ matrix.scheme }}-latest-${{ matrix.variant }}
 
     steps:
       - name: Checkout repository
@@ -93,7 +93,10 @@ jobs:
         with:
           context: .
           push: ${{ github.event_name != 'pull_request' }}
-          tags: ${{ steps.meta.outputs.tags }}
+          tags: |
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}::${{ matrix.scheme }}
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}::${{ matrix.scheme }}-${{ steps.meta.outputs.tags }}
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}::${{ matrix.scheme }}-${{ steps.meta.outputs.tags }}-${{ matrix.variant }}
           build-args: |
             variant=${{ matrix.variant }}
             scheme=${{ matrix.scheme }}
