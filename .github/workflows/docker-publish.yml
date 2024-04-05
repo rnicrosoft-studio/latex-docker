@@ -15,6 +15,10 @@ on:
   pull_request:
     branches: [ "main" ]
   workflow_dispatch:
+    inputs:
+      version:
+        description: "Version of the docker image to be tagged as latest"
+        required: true
 
 env:
   # Use docker.io for Docker Hub if empty
