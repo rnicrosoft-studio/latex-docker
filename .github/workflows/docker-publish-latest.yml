@@ -25,6 +25,9 @@ env:
   REGISTRY: ghcr.io
   # github.repository as <account>/<repo>
   IMAGE_NAME: ${{ github.repository_owner }}/latex # ${{ github.repository }}
+  # Default value of matrix
+  SCHEME_DEFAUTL: minimal
+  VARIANT_DEFAUTL: jammy
 
 
 jobs:
@@ -41,16 +44,16 @@ jobs:
     strategy:
       matrix:
         scheme:
-          - infraonly
           - minimal
           - basic
+          - infraonly
         variant:
           - jammy
     name: Build ${{ matrix.scheme }}-${{ matrix.variant }}
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       # # Install the cosign tool except on PR
       # # https://github.com/sigstore/cosign-installer
@@ -75,6 +78,15 @@ jobs:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
+      
+      # Obtain year version of TeXLive
+      - name: Obtain year version of TeXLive
+        id: year
+        run: |
+          wget https://mirror.ctan.org/systems/texlive/tlnet/install-tl-unx.tar.gz
+          zcat < install-tl-unx.tar.gz | tar -xf -
+          echo "YEAR=$(ls -d install-tl-2* | sed -e 's/.*[/]//g')" >> $GITHUB_ENV
+          echo "YEAR=$YEAR"
 
       # Extract metadata (tags, labels) for Docker
       # https://github.com/docker/metadata-action
@@ -83,26 +95,46 @@ jobs:
         uses: docker/metadata-action@96383f45573cb7f253c731d3b3ab81c87ef81934 # v5.0.0
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-      
-      - name: Extract TexLive year version
-        id: year
-        run: |
-          echo "YEAR=$(ls -d /usr/local/texlive/2* | sed -e 's/.*[/]//g')" >> $GITHUB_ENV
+          labels: |
+            org.opencontainers.image.title=LaTeX
+          tags: |
+            # type=schedule
+            # type=ref,event=branch
+            # type=ref,event=tag
+            type=ref,event=pr
+
+            type=schedule,pattern={{date 'YYYYMM'}},enable=${{ matrix.variant==env.VARIANT_DEFAUTL && matrix.scheme==env.SCHEME_DEFAUTL }}
+            type=ref,event=branch,enable=${{ matrix.variant==env.VARIANT_DEFAUTL && matrix.scheme==env.SCHEME_DEFAUTL }}
+            type=ref,event=tag,enable=${{ matrix.variant==env.VARIANT_DEFAUTL && matrix.scheme==env.SCHEME_DEFAUTL }}
+            
+            type=ref,event=workflow_dispatch
+            
+            type=raw,enable=true,value=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest-${{ matrix.scheme }}-${{ matrix.variant }}
+            type=raw,enable=true,value=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.YEAR }}-${{ matrix.scheme }}-${{ matrix.variant }}
+            type=raw,enable=true,value=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ matrix.scheme }}-${{ matrix.variant }}
+
+            type=raw,enable=${{ matrix.variant==env.VARIANT_DEFAUTL }},value=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest-${{ matrix.scheme }}
+            type=raw,enable=${{ matrix.variant==env.VARIANT_DEFAUTL }},value=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.YEAR }}-${{ matrix.scheme }}
+            type=raw,enable=${{ matrix.variant==env.VARIANT_DEFAUTL }},value=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ matrix.scheme }}
+            type=raw,enable=${{ matrix.scheme==env.SCHEME_DEFAUTL }},value=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest-${{ matrix.variant }}
+            type=raw,enable=${{ matrix.scheme==env.SCHEME_DEFAUTL }},value=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.YEAR }}-${{ matrix.variant }}
+            type=raw,enable=${{ matrix.scheme==env.SCHEME_DEFAUTL }},value=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ matrix.variant }}
+
+            type=raw,enable=${{ matrix.variant==env.VARIANT_DEFAUTL && matrix.scheme==env.SCHEME_DEFAUTL }},value=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.YEAR }}
+            type=raw,enable=${{ matrix.variant==env.VARIANT_DEFAUTL && matrix.scheme==env.SCHEME_DEFAUTL }},value=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+            
+            type=raw,enable=true,prefix=1,suffix=2,value=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ matrix.scheme }}
       
       # Build and push Docker image with Buildx (don't push on PR)
       # https://github.com/docker/build-push-action
       - name: Build and push Docker image
-        id: build-and-push
+        id: build-and-push-latest
         uses: docker/build-push-action@0565240e2d4ab88bba5387d719585280857ece09 # v5.0.0
+        # if: ${{ (matrix.scheme == 'full' && matrix.variant == 'jammy') }} # latest
         with:
           context: .
           push: ${{ github.event_name != 'pull_request' }}
-          tags: |
-            ${{ steps.meta.outputs.tags }}
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ matrix.scheme }}
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest-${{ matrix.scheme }}
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest-${{ matrix.scheme }}-${{ matrix.variant }}
+          tags: ${{ steps.meta.outputs.tags }}
           build-args: |
             variant=${{ matrix.variant }}
             scheme=${{ matrix.scheme }}
