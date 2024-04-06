@@ -85,8 +85,8 @@ jobs:
         run: |
           wget https://mirror.ctan.org/systems/texlive/tlnet/install-tl-unx.tar.gz
           zcat < install-tl-unx.tar.gz | tar -xf -
-          echo "YEAR=$(ls -d install-tl-2* | sed -e 's/.*[/]//g')" >> $GITHUB_ENV
-          echo "YEAR=$(ls -d install-tl-2* | sed -e 's/.*[/]//g')"
+          echo "YEAR=$(ls -d install-tl-2* | cut -c 12-15)" >> $GITHUB_ENV
+          echo "YEAR=$(ls -d install-tl-2* | cut -c 12-15)"
 
       # Extract metadata (tags, labels) for Docker
       # https://github.com/docker/metadata-action
