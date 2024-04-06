@@ -86,7 +86,7 @@ jobs:
           wget https://mirror.ctan.org/systems/texlive/tlnet/install-tl-unx.tar.gz
           zcat < install-tl-unx.tar.gz | tar -xf -
           echo "YEAR=$(ls -d install-tl-2* | sed -e 's/.*[/]//g')" >> $GITHUB_ENV
-          echo "YEAR=$YEAR"
+          echo "YEAR=$(ls -d install-tl-2* | sed -e 's/.*[/]//g')"
 
       # Extract metadata (tags, labels) for Docker
       # https://github.com/docker/metadata-action
@@ -106,8 +106,6 @@ jobs:
             type=schedule,pattern={{date 'YYYYMM'}},enable=${{ matrix.variant==env.VARIANT_DEFAUTL && matrix.scheme==env.SCHEME_DEFAUTL }}
             type=ref,event=branch,enable=${{ matrix.variant==env.VARIANT_DEFAUTL && matrix.scheme==env.SCHEME_DEFAUTL }}
             type=ref,event=tag,enable=${{ matrix.variant==env.VARIANT_DEFAUTL && matrix.scheme==env.SCHEME_DEFAUTL }}
-            
-            type=ref,event=workflow_dispatch
             
             type=raw,enable=true,value=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest-${{ matrix.scheme }}-${{ matrix.variant }}
             type=raw,enable=true,value=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.YEAR }}-${{ matrix.scheme }}-${{ matrix.variant }}
