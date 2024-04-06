@@ -42,6 +42,8 @@ jobs:
       matrix:
         scheme:
           - infraonly
+          - minimal
+          - basic
         variant:
           - jammy
     name: Build ${{ matrix.scheme }}-${{ matrix.variant }}
@@ -82,6 +84,11 @@ jobs:
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
       
+      - name: Extract TexLive year version
+        id: year
+        run: |
+          echo "YEAR=$(ls -d /usr/local/texlive/2* | sed -e 's/.*[/]//g')" >> $GITHUB_ENV
+      
       # Build and push Docker image with Buildx (don't push on PR)
       # https://github.com/docker/build-push-action
       - name: Build and push Docker image
@@ -92,10 +99,10 @@ jobs:
           push: ${{ github.event_name != 'pull_request' }}
           tags: |
             ${{ steps.meta.outputs.tags }}
-            ${{ env.IMAGE_NAME }}:latest
-            ${{ env.IMAGE_NAME }}:${{ matrix.scheme }}
-            ${{ env.IMAGE_NAME }}:latest-${{ matrix.scheme }}
-            ${{ env.IMAGE_NAME }}:latest-${{ matrix.scheme }}-${{ matrix.variant }}
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ matrix.scheme }}
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest-${{ matrix.scheme }}
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest-${{ matrix.scheme }}-${{ matrix.variant }}
           build-args: |
             variant=${{ matrix.variant }}
             scheme=${{ matrix.scheme }}
