@@ -44,7 +44,7 @@ jobs:
           - infraonly
         variant:
           - jammy
-    name: Build latex:${{ matrix.scheme }}-latest-${{ matrix.variant }}
+    name: Build ${{ matrix.scheme }}-${{ matrix.variant }}
 
     steps:
       - name: Checkout repository
@@ -81,9 +81,6 @@ jobs:
         uses: docker/metadata-action@96383f45573cb7f253c731d3b3ab81c87ef81934 # v5.0.0
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-          # tags: |
-          #   # set latest tag for default branch
-          #   type=raw,value=latest,enable={{is_default_branch}}
 
       # Build and push Docker image with Buildx (don't push on PR)
       # https://github.com/docker/build-push-action
@@ -94,9 +91,9 @@ jobs:
           context: .
           push: ${{ github.event_name != 'pull_request' }}
           tags: |
-            ${{ github.repository }}/${{ env.IMAGE_NAME }}:${{ matrix.scheme }}
-            ${{ github.repository_owner }}/${{ env.IMAGE_NAME }}:${{ steps.meta.outputs.tags }}-${{ matrix.scheme }}
-            ${{ github.repository_owner }}/${{ env.IMAGE_NAME }}:${{ steps.meta.outputs.tags }}-${{ matrix.scheme }}-${{ matrix.variant }}
+            ${{ env.IMAGE_NAME }}:${{ matrix.scheme }}
+            ${{ env.IMAGE_NAME }}:${{ steps.meta.outputs.tags }}-${{ matrix.scheme }}
+            ${{ env.IMAGE_NAME }}:${{ steps.meta.outputs.tags }}-${{ matrix.scheme }}-${{ matrix.variant }}
           build-args: |
             variant=${{ matrix.variant }}
             scheme=${{ matrix.scheme }}
