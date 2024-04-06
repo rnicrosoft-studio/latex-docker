@@ -107,21 +107,21 @@ jobs:
             type=ref,event=branch,enable=${{ matrix.variant==env.VARIANT_DEFAUTL && matrix.scheme==env.SCHEME_DEFAUTL }}
             type=ref,event=tag,enable=${{ matrix.variant==env.VARIANT_DEFAUTL && matrix.scheme==env.SCHEME_DEFAUTL }}
             
-            type=raw,enable=true,value=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest-${{ matrix.scheme }}-${{ matrix.variant }}
-            type=raw,enable=true,value=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.YEAR }}-${{ matrix.scheme }}-${{ matrix.variant }}
-            type=raw,enable=true,value=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ matrix.scheme }}-${{ matrix.variant }}
+            type=raw,enable=true,value=latest-${{ matrix.scheme }}-${{ matrix.variant }}
+            type=raw,enable=true,value=${{ env.YEAR }}-${{ matrix.scheme }}-${{ matrix.variant }}
+            type=raw,enable=true,value=${{ matrix.scheme }}-${{ matrix.variant }}
 
-            type=raw,enable=${{ matrix.variant==env.VARIANT_DEFAUTL }},value=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest-${{ matrix.scheme }}
-            type=raw,enable=${{ matrix.variant==env.VARIANT_DEFAUTL }},value=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.YEAR }}-${{ matrix.scheme }}
-            type=raw,enable=${{ matrix.variant==env.VARIANT_DEFAUTL }},value=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ matrix.scheme }}
-            type=raw,enable=${{ matrix.scheme==env.SCHEME_DEFAUTL }},value=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest-${{ matrix.variant }}
-            type=raw,enable=${{ matrix.scheme==env.SCHEME_DEFAUTL }},value=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.YEAR }}-${{ matrix.variant }}
-            type=raw,enable=${{ matrix.scheme==env.SCHEME_DEFAUTL }},value=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ matrix.variant }}
+            type=raw,enable=${{ matrix.variant==env.VARIANT_DEFAUTL }},value=latest-${{ matrix.scheme }}
+            type=raw,enable=${{ matrix.variant==env.VARIANT_DEFAUTL }},value=${{ env.YEAR }}-${{ matrix.scheme }}
+            type=raw,enable=${{ matrix.variant==env.VARIANT_DEFAUTL }},value=${{ matrix.scheme }}
+            type=raw,enable=${{ matrix.scheme==env.SCHEME_DEFAUTL }},value=latest-${{ matrix.variant }}
+            type=raw,enable=${{ matrix.scheme==env.SCHEME_DEFAUTL }},value=${{ env.YEAR }}-${{ matrix.variant }}
+            type=raw,enable=${{ matrix.scheme==env.SCHEME_DEFAUTL }},value=${{ matrix.variant }}
 
-            type=raw,enable=${{ matrix.variant==env.VARIANT_DEFAUTL && matrix.scheme==env.SCHEME_DEFAUTL }},value=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.YEAR }}
-            type=raw,enable=${{ matrix.variant==env.VARIANT_DEFAUTL && matrix.scheme==env.SCHEME_DEFAUTL }},value=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+            type=raw,enable=${{ matrix.variant==env.VARIANT_DEFAUTL && matrix.scheme==env.SCHEME_DEFAUTL }},value=${{ env.YEAR }}
+            type=raw,enable=${{ matrix.variant==env.VARIANT_DEFAUTL && matrix.scheme==env.SCHEME_DEFAUTL }},value=latest
             
-            type=raw,enable=true,prefix=1,suffix=2,value=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ matrix.scheme }}
+            type=raw,enable=true,prefix=1,suffix=2,value=${{ matrix.scheme }}
       
       # Build and push Docker image with Buildx (don't push on PR)
       # https://github.com/docker/build-push-action
