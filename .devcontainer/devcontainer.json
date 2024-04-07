@@ -20,7 +20,10 @@
 		"vscode": {
 			"extensions": [
 				"adam-bender.commit-message-editor"
-			]
+			],
+			"settings": {
+				"workbench.colorTheme": "Default Dark Modern"
+			}
 		}
 	}
 
