@@ -138,8 +138,8 @@ jobs:
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           build-args: |
-            variant=${{ matrix.variant }}
-            scheme=${{ matrix.scheme }}
+            VARIANT=${{ matrix.variant }}
+            SCHEME=${{ matrix.scheme }}
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
