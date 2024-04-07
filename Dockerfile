@@ -5,10 +5,11 @@ FROM buildpack-deps:${VARIANT}-curl
 # ARG VARIANT
 ARG SCHEME
 LABEL dev.containers.features="common"
+ENV LANG C.UTF-8
 
 # install additional OS packages.
 RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
-    && apt-get -y install --no-install-recommends wget libfile-fcntllock-perl
+    && apt-get -y install --no-install-recommends wget libfontconfig git make libfile-fcntllock-perl
 
 # TeXLive
 WORKDIR /tmp
