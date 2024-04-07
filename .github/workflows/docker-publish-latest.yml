@@ -7,7 +7,7 @@ name: Docker
 
 on:
   schedule:
-    - cron: '28 1 1 * *'
+    - cron: '0 0 1 * *'
   push:
     branches: [ "main" ]
     # Publish semver tags as releases.
@@ -19,6 +19,7 @@ on:
       version:
         description: "Version of the docker image to be tagged as latest"
         required: true
+        default: latest
 
 env:
   # Use docker.io for Docker Hub if empty
@@ -133,6 +134,7 @@ jobs:
         if: ${{ !(matrix.scheme == 'full' && github.event_name == 'pull_request') }}
         with:
           context: .
+          file: Dockerfile
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           build-args: |
