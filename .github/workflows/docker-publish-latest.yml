@@ -26,7 +26,7 @@ env:
   # github.repository as <account>/<repo>
   IMAGE_NAME: ${{ github.repository_owner }}/latex # ${{ github.repository }}
   # Default value of matrix
-  SCHEME_DEFAUTL: minimal
+  SCHEME_DEFAUTL: full
   VARIANT_DEFAUTL: jammy
 
 
@@ -43,13 +43,21 @@ jobs:
 
     strategy:
       matrix:
-        scheme:
-          - minimal
-          - basic
-          - infraonly
+        scheme: # https://tug.org/texlive/doc/texlive-en/texlive-en.html#x1-26025r8
+          - full      # a [ ] full scheme (everything) 
+          - medium    # b [ ] medium scheme (small + more packages and languages) 
+          - small     # c [ ] small scheme (basic + xetex, metapost, a few languages) 
+          - basic     # d [ ] basic scheme (plain and latex) 
+          - minimal   # e [ ] minimal scheme (plain only) 
+          - infraonly # f [ ] infrastructure-only scheme (no TeX at all) 
+          # -           # g [ ] book publishing scheme (core LaTeX and add-ons) 
+          # -           # h [ ] ConTeXt scheme 
+          # -           # i [ ] GUST TeX Live scheme 
+          # -           # j [ ] teTeX scheme (more than medium, but nowhere near full) 
+          # -           # k [ ] custom selection of collections
         variant:
           - jammy
-    name: Build ${{ matrix.scheme }}-${{ matrix.variant }}
+    name: Build TeXLive [${{ matrix.scheme }}-${{ matrix.variant }}]
 
     steps:
       - name: Checkout repository
@@ -79,8 +87,8 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
       
-      # Obtain year version of TeXLive
-      - name: Obtain year version of TeXLive
+      # Obtain year in version of TeXLive
+      - name: Obtain year in version of TeXLive
         id: year
         run: |
           wget https://mirror.ctan.org/systems/texlive/tlnet/install-tl-unx.tar.gz
@@ -98,14 +106,10 @@ jobs:
           labels: |
             org.opencontainers.image.title=LaTeX
           tags: |
-            # type=schedule
-            # type=ref,event=branch
-            # type=ref,event=tag
-            type=ref,event=pr
-
             type=schedule,pattern={{date 'YYYYMM'}},enable=${{ matrix.variant==env.VARIANT_DEFAUTL && matrix.scheme==env.SCHEME_DEFAUTL }}
             type=ref,event=branch,enable=${{ matrix.variant==env.VARIANT_DEFAUTL && matrix.scheme==env.SCHEME_DEFAUTL }}
             type=ref,event=tag,enable=${{ matrix.variant==env.VARIANT_DEFAUTL && matrix.scheme==env.SCHEME_DEFAUTL }}
+            type=ref,event=pr
             
             type=raw,enable=true,value=latest-${{ matrix.scheme }}-${{ matrix.variant }}
             type=raw,enable=true,value=${{ env.YEAR }}-${{ matrix.scheme }}-${{ matrix.variant }}
@@ -118,17 +122,15 @@ jobs:
             type=raw,enable=${{ matrix.scheme==env.SCHEME_DEFAUTL }},value=${{ env.YEAR }}-${{ matrix.variant }}
             type=raw,enable=${{ matrix.scheme==env.SCHEME_DEFAUTL }},value=${{ matrix.variant }}
 
-            type=raw,enable=${{ matrix.variant==env.VARIANT_DEFAUTL && matrix.scheme==env.SCHEME_DEFAUTL }},value=${{ env.YEAR }}
             type=raw,enable=${{ matrix.variant==env.VARIANT_DEFAUTL && matrix.scheme==env.SCHEME_DEFAUTL }},value=latest
-            
-            type=raw,enable=true,prefix=1,suffix=2,value=${{ matrix.scheme }}
+            type=raw,enable=${{ matrix.variant==env.VARIANT_DEFAUTL && matrix.scheme==env.SCHEME_DEFAUTL }},value=${{ env.YEAR }}
       
       # Build and push Docker image with Buildx (don't push on PR)
       # https://github.com/docker/build-push-action
       - name: Build and push Docker image
         id: build-and-push-latest
         uses: docker/build-push-action@0565240e2d4ab88bba5387d719585280857ece09 # v5.0.0
-        # if: ${{ (matrix.scheme == 'full' && matrix.variant == 'jammy') }} # latest
+        if: ${{ !(matrix.scheme == 'full' && github.event_name == 'pull_request') }}
         with:
           context: .
           push: ${{ github.event_name != 'pull_request' }}
