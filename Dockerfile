@@ -12,7 +12,7 @@ RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
 
 # TeXLive
 WORKDIR /tmp
-RUN wget https://mirror.ctan.org/systems/texlive/tlnet/install-tl-unx.tar.gz \
+RUN wget --no-check-certificate https://mirror.ctan.org/systems/texlive/tlnet/install-tl-unx.tar.gz \
     && zcat < install-tl-unx.tar.gz | tar -xf - \
     && export TLDIR=$( ls -d install-tl-2* ) \
     && perl "./${TLDIR}/install-tl" -scheme="scheme-${SCHEME}" --no-interaction
