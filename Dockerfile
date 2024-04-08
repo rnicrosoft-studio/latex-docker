@@ -4,7 +4,11 @@ FROM buildpack-deps:${VARIANT}-curl
 
 # ARG VARIANT
 ARG SCHEME
-LABEL dev.containers.features="common"
+LABEL \
+  org.opencontainers.image.title="Devcontainer of TeXLive" \
+  org.opencontainers.image.authors="rnicrosoft-studio" \
+  org.opencontainers.image.source="https://github.com/rnicrosoft-studio/latex-docker/" \
+  org.opencontainers.image.licenses="MPL-2.0"
 ENV LANG C.UTF-8
 
 # install additional OS packages.
