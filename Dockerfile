@@ -28,6 +28,7 @@ RUN YEAR=$(ls -d /usr/local/texlive/2* | sed -e 's/.*[/]//g') \
     && echo PATH=/usr/local/texlive/$YEAR/bin/x86_64-linux:$PATH >> ~/.profile \
     && . ~/.profile \
     # System font configuration for XeTeX and LuaTeX
-    && ln -s /usr/local/texlive/$YEAR/texmf-var/fonts/conf/texlive-fontconfig.conf /etc/fonts/conf.d/09-texlive.conf \ # Ref: https://www.tug.org/texlive/doc/texlive-en/texlive-en.html#x1-330003.4.4
+    # Ref: https://www.tug.org/texlive/doc/texlive-en/texlive-en.html#x1-330003.4.4
+    && ln -s /usr/local/texlive/$YEAR/texmf-var/fonts/conf/texlive-fontconfig.conf /etc/fonts/conf.d/09-texlive.conf \
     && fc-cache -fv
     
