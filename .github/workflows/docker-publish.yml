@@ -24,7 +24,7 @@ on:
   workflow_dispatch:
     inputs:
       input_year:
-        description: "Year (YYYY) version of TexLive, leave empty for latest"
+        description: "Year (YYYY) version of TexLive, default of `latest`"
         required: false
         default: latest
 
