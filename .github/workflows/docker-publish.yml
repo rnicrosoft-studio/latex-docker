@@ -102,15 +102,17 @@ jobs:
         run: |
           if [ "${{ github.event_name }}" != "workflow_dispatch" ] || [ "${{ inputs.input_year }}" = "latest" ]; then \
               echo "TEXLIVE_YEAR=latest" >> $GITHUB_ENV; \
+              echo "TEXLIVE_YEAR=latest"; \
               wget --no-check-certificate https://mirror.ctan.org/systems/texlive/tlnet/install-tl-unx.tar.gz; \
               zcat < install-tl-unx.tar.gz | tar -xf -; \
               echo "YEAR=$(ls -d install-tl-2* | cut -c 12-15)" >> $GITHUB_ENV; \
+              echo "YEAR=$(ls -d install-tl-2* | cut -c 12-15)"; \
           else \
               echo "TEXLIVE_YEAR=${{ inputs.input_year }}" >> $GITHUB_ENV; \
+              echo "TEXLIVE_YEAR=${{ inputs.input_year }}"; \
               echo "YEAR=${{ inputs.input_year }}" >> $GITHUB_ENV; \
+              echo "YEAR=${{ inputs.input_year }}"; \
           fi
-          echo "TEXLIVE_YEAR=${TEXLIVE_YEAR}"
-          echo "YEAR=${YEAR}"
 
       # Extract metadata (tags, labels) for Docker
       # https://github.com/docker/metadata-action
