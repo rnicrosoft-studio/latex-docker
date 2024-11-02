@@ -19,7 +19,8 @@
 	"customizations": {
 		"vscode": {
 			"extensions": [
-				"adam-bender.commit-message-editor"
+				"adam-bender.commit-message-editor",
+				"github.vscode-github-actions"
 			],
 			"settings": {
 				"workbench.colorTheme": "Monokai Dimmed"
