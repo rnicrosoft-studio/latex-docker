@@ -22,7 +22,7 @@
 				"adam-bender.commit-message-editor"
 			],
 			"settings": {
-				"workbench.colorTheme": "Default Dark Modern"
+				"workbench.colorTheme": "Monokai Dimmed"
 			}
 		}
 	}
