@@ -1,8 +1,8 @@
-# [Choice] Ubuntu version (use jammy on local arm64/Apple Silicon): jammy, focal
+# noble(24.04 LTS), jammy(22.04 LTS)
 ARG VARIANT
 FROM buildpack-deps:${VARIANT}-curl
 
-# ARG VARIANT
+ARG TEXLIVE_YEAR
 ARG SCHEME
 LABEL \
   org.opencontainers.image.title="Devcontainer of TeXLive" \
@@ -17,10 +17,19 @@ RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
 
 # TeXLive
 WORKDIR /tmp
-RUN wget --no-check-certificate https://mirror.ctan.org/systems/texlive/tlnet/install-tl-unx.tar.gz \
-    && zcat < install-tl-unx.tar.gz | tar -xf - \
-    && export TLDIR=$( ls -d install-tl-2* ) \
-    && perl "./${TLDIR}/install-tl" -scheme="scheme-${SCHEME}" --no-interaction
+RUN if [ "$TEXLIVE_YEAR" = "latest" ]; then \
+        echo "Installing latest TeXLive ..."; \
+        wget --no-check-certificate https://mirror.ctan.org/systems/texlive/tlnet/install-tl-unx.tar.gz \
+        && zcat < install-tl-unx.tar.gz | tar -xf - \
+        && export TLDIR=$( ls -d install-tl-2* ) \
+        && perl "./${TLDIR}/install-tl" -scheme="scheme-${SCHEME}" --no-interaction; \
+    else \
+        echo "Installing TeXLive ${TEXLIVE_YEAR} ..."; \
+        wget --no-check-certificate https://ftp.math.utah.edu/pub/tex/historic/systems/texlive/${TEXLIVE_YEAR}/tlnet-final/install-tl-unx.tar.gz \
+        && zcat < install-tl-unx.tar.gz | tar -xf - \
+        && export TLDIR=$( ls -d install-tl-2* ) \
+        && perl "./${TLDIR}/install-tl" -scheme="scheme-${SCHEME}" -repository https://ftp.math.utah.edu/pub/tex/historic/systems/texlive/${TEXLIVE_YEAR}/tlnet-final --no-interaction; \
+    fi
 
 RUN YEAR=$(ls -d /usr/local/texlive/2* | sed -e 's/.*[/]//g') \
     && echo MANPATH=/usr/local/texlive/$YEAR/texmf-dist/doc/man:$MANPATH >> ~/.profile \

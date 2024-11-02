@@ -7,24 +7,25 @@ name: Docker
 
 on:
   schedule:
+    # Runs at 00:00, on day 1 of the month
     - cron: '0 0 1 * *'
   push:
     branches: [ "main" ]
     # Publish semver tags as releases.
     tags: [ 'v*.*.*' ]
     paths:
-      - '.github/workflows/docker-publish-latest.yml'
+      - '.github/workflows/docker-publish.yml'
       - 'Dockerfile'
   pull_request:
     branches: [ "main" ]
     paths:
-      - '.github/workflows/docker-publish-latest.yml'
+      - '.github/workflows/docker-publish.yml'
       - 'Dockerfile'
   workflow_dispatch:
     inputs:
-      version:
-        description: "Version of the docker image to be tagged as latest"
-        required: true
+      input_year:
+        description: "Year (YYYY) version of TexLive, leave empty for latest"
+        required: false
         default: latest
 
 env:
@@ -63,7 +64,8 @@ jobs:
           # -           # j [ ] teTeX scheme (more than medium, but nowhere near full) 
           # -           # k [ ] custom selection of collections
         variant:
-          - jammy
+          - jammy     # 22.04 LTS
+          - noble     # 24.04 LTS
     name: Build TeXLive [${{ matrix.scheme }}-${{ matrix.variant }}]
 
     steps:
@@ -94,14 +96,21 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
       
-      # Obtain year in version of TeXLive
-      - name: Obtain year in version of TeXLive
+      # Obtain TeXLive year version
+      - name: Obtain TeXLive year version
         id: year
         run: |
-          wget --no-check-certificate https://mirror.ctan.org/systems/texlive/tlnet/install-tl-unx.tar.gz
-          zcat < install-tl-unx.tar.gz | tar -xf -
-          echo "YEAR=$(ls -d install-tl-2* | cut -c 12-15)" >> $GITHUB_ENV
-          echo "YEAR=$(ls -d install-tl-2* | cut -c 12-15)"
+          if [ "${{ github.event_name }}" != "workflow_dispatch" ] || [ "${{ inputs.input_year }}" = "latest" ]; then \
+              echo "TEXLIVE_YEAR=latest" >> $GITHUB_ENV; \
+              wget --no-check-certificate https://mirror.ctan.org/systems/texlive/tlnet/install-tl-unx.tar.gz; \
+              zcat < install-tl-unx.tar.gz | tar -xf -; \
+              echo "YEAR=$(ls -d install-tl-2* | cut -c 12-15)" >> $GITHUB_ENV; \
+          else \
+              echo "TEXLIVE_YEAR=${{ inputs.input_year }}" >> $GITHUB_ENV; \
+              echo "YEAR=${{ inputs.input_year }}" >> $GITHUB_ENV; \
+          fi
+          echo "TEXLIVE_YEAR=${{ env.TEXLIVE_YEAR }}"
+          echo "YEAR=${{ env.YEAR }}"; \
 
       # Extract metadata (tags, labels) for Docker
       # https://github.com/docker/metadata-action
@@ -118,18 +127,18 @@ jobs:
             type=ref,event=tag,enable=${{ matrix.variant==env.VARIANT_DEFAUTL && matrix.scheme==env.SCHEME_DEFAUTL }}
             type=ref,event=pr
             
-            type=raw,enable=true,value=latest-${{ matrix.scheme }}-${{ matrix.variant }}
+            type=raw,enable=${{ env.TEXLIVE_YEAR=='latest' }},value=latest-${{ matrix.scheme }}-${{ matrix.variant }}
             type=raw,enable=true,value=${{ env.YEAR }}-${{ matrix.scheme }}-${{ matrix.variant }}
             type=raw,enable=true,value=${{ matrix.scheme }}-${{ matrix.variant }}
 
-            type=raw,enable=${{ matrix.variant==env.VARIANT_DEFAUTL }},value=latest-${{ matrix.scheme }}
+            type=raw,enable=${{ matrix.variant==env.VARIANT_DEFAUTL && env.TEXLIVE_YEAR=='latest' }},value=latest-${{ matrix.scheme }}
             type=raw,enable=${{ matrix.variant==env.VARIANT_DEFAUTL }},value=${{ env.YEAR }}-${{ matrix.scheme }}
             type=raw,enable=${{ matrix.variant==env.VARIANT_DEFAUTL }},value=${{ matrix.scheme }}
-            type=raw,enable=${{ matrix.scheme==env.SCHEME_DEFAUTL }},value=latest-${{ matrix.variant }}
+            type=raw,enable=${{ matrix.scheme==env.SCHEME_DEFAUTL && env.TEXLIVE_YEAR=='latest' }},value=latest-${{ matrix.variant }}
             type=raw,enable=${{ matrix.scheme==env.SCHEME_DEFAUTL }},value=${{ env.YEAR }}-${{ matrix.variant }}
             type=raw,enable=${{ matrix.scheme==env.SCHEME_DEFAUTL }},value=${{ matrix.variant }}
 
-            type=raw,enable=${{ matrix.variant==env.VARIANT_DEFAUTL && matrix.scheme==env.SCHEME_DEFAUTL }},value=latest
+            type=raw,enable=${{ matrix.variant==env.VARIANT_DEFAUTL && matrix.scheme==env.SCHEME_DEFAUTL && env.TEXLIVE_YEAR=='latest' }},value=latest
             type=raw,enable=${{ matrix.variant==env.VARIANT_DEFAUTL && matrix.scheme==env.SCHEME_DEFAUTL }},value=${{ env.YEAR }}
       
       # Build and push Docker image with Buildx (don't push on PR)
@@ -146,6 +155,7 @@ jobs:
           build-args: |
             VARIANT=${{ matrix.variant }}
             SCHEME=${{ matrix.scheme }}
+            TEXLIVE_YEAR=${{ env.TEXLIVE_YEAR }}
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
@@ -164,3 +174,13 @@ jobs:
       #   # This step uses the identity token to provision an ephemeral certificate
       #   # against the sigstore community Fulcio instance.
       #   run: echo "${TAGS}" | xargs -I {} cosign sign --yes {}@${DIGEST}
+  
+  workflow-keepalive:
+    name: Keepalive workflow
+    if: github.event_name == 'schedule'
+    runs-on: ubuntu-latest
+    permissions:
+      actions: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: gautamkrishnar/keepalive-workflow@v2
