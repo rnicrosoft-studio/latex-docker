@@ -16,27 +16,27 @@ docker pull ghcr.io/rnicrosoft-studio/latex:<TAG>
 | `<VARIANT>` | jammy |
 
 
-* `main` `jammy`
-    * `latest` `latest-jammy`
-    * `2024` `2024-jammy`
-* `full` `full-jammy`
-    * `latest-full` `latest-full-jammy`
-    * `2024-full` `2024-full-jammy`
-* `medium` `medium-jammy`
-    * `latest-medium` `latest-medium-jammy`
-    * `2024-medium` `2024-medium-jammy` 
-* `small` `small-jammy`
-    * `latest-small` `latest-small-jammy`
-    * `2024-small` `2024-small-jammy`
-* `basic` `basic-jammy`
-    * `latest-basic` `latest-basic-jammy`
-    * `2024-basic` `2024-basic-jammy`
-* `minimal` `minimal-jammy`
-    * `latest-minimal` `latest-minimal-jammy`
-    * `2024-minimal` `2024-minimal-jammy`
-* `infraonly` `infraonly-jammy`
-    * `latest-infraonly` `latest-infraonly-jammy`
-    * `2024-infraonly` `2024-infraonly-jammy`
+* `noble` `jammy`
+    * `latest` `latest-noble` `latest-jammy`
+    * `2024` `2024-noble` `2024-jammy`
+* `full` `full-noble` `full-jammy`
+    * `latest-full` `latest-full-noble` `latest-full-jammy`
+    * `2024-full` `2024-full-noble` `2024-full-jammy`
+* `medium` `medium-noble` `medium-jammy`
+    * `latest-medium` `latest-medium-noble` `latest-medium-jammy`
+    * `2024-medium` `2024-medium-noble`  `2024-medium-jammy` 
+* `small` `small-noble` `small-jammy`
+    * `latest-small` `latest-small-noble` `latest-small-jammy`
+    * `2024-small` `2024-small-noble` `2024-small-jammy`
+* `basic` `basic-noble` `basic-jammy`
+    * `latest-basic` `latest-basic-noble` `latest-basic-jammy`
+    * `2024-basic` `2024-basic-noble` `2024-basic-jammy`
+* `minimal` `minimal-noble` `minimal-jammy`
+    * `latest-minimal` `latest-minimal-noble` `latest-minimal-jammy`
+    * `2024-minimal` `2024-minimal-noble` `2024-minimal-jammy`
+* `infraonly` `infraonly-noble` `infraonly-jammy`
+    * `latest-infraonly` `latest-infraonly-noble` `latest-infraonly-jammy`
+    * `2024-infraonly` `2024-infraonly-noble` `2024-infraonly-jammy`
 
 # Notice
 
