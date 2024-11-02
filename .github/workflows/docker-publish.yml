@@ -109,8 +109,8 @@ jobs:
               echo "TEXLIVE_YEAR=${{ inputs.input_year }}" >> $GITHUB_ENV; \
               echo "YEAR=${{ inputs.input_year }}" >> $GITHUB_ENV; \
           fi
-          echo "TEXLIVE_YEAR=${{ env.TEXLIVE_YEAR }}"
-          echo "YEAR=${{ env.YEAR }}"; \
+          echo "TEXLIVE_YEAR=${TEXLIVE_YEAR}"
+          echo "YEAR=${YEAR}"
 
       # Extract metadata (tags, labels) for Docker
       # https://github.com/docker/metadata-action
