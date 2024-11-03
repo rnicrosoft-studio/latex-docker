@@ -9,34 +9,69 @@ docker pull ghcr.io/rnicrosoft-studio/latex:<TAG>
 # Supported tags
 `<YEAR>-<SCHEME>-<VARIANT>`
 
-|  | Default |
-| -- | -- |
-| `<YEAR>` | latest / 2024 |
-| `<SCHEME>` | full |
-| `<VARIANT>` | jammy |
+|  | Default | Options |
+| -- | -- | -- |
+| `<YEAR>` | latest / 2024 | latest, 2024, 2023 |
+| `<SCHEME>` | full | full, medium, small, basic, minimal, infraonly |
+| `<VARIANT>` | jammy | noble, jammy |
 
 
-* `noble` `jammy`
-    * `latest` `latest-noble` `latest-jammy`
-    * `2024` `2024-noble` `2024-jammy`
-* `full` `full-noble` `full-jammy`
-    * `latest-full` `latest-full-noble` `latest-full-jammy`
-    * `2024-full` `2024-full-noble` `2024-full-jammy`
-* `medium` `medium-noble` `medium-jammy`
-    * `latest-medium` `latest-medium-noble` `latest-medium-jammy`
-    * `2024-medium` `2024-medium-noble`  `2024-medium-jammy` 
-* `small` `small-noble` `small-jammy`
-    * `latest-small` `latest-small-noble` `latest-small-jammy`
-    * `2024-small` `2024-small-noble` `2024-small-jammy`
-* `basic` `basic-noble` `basic-jammy`
-    * `latest-basic` `latest-basic-noble` `latest-basic-jammy`
-    * `2024-basic` `2024-basic-noble` `2024-basic-jammy`
-* `minimal` `minimal-noble` `minimal-jammy`
-    * `latest-minimal` `latest-minimal-noble` `latest-minimal-jammy`
-    * `2024-minimal` `2024-minimal-noble` `2024-minimal-jammy`
-* `infraonly` `infraonly-noble` `infraonly-jammy`
-    * `latest-infraonly` `latest-infraonly-noble` `latest-infraonly-jammy`
-    * `2024-infraonly` `2024-infraonly-noble` `2024-infraonly-jammy`
+* 2024
+    * 2024-noble
+        * `2024-full-noble`
+            * `latest-noble` `latest-full-noble`
+            * `2024` `noble`
+            * `2024-noble` `full-noble`
+        * `2024-medium-noble`
+            * `latest-medium-noble`
+            * `medium-noble`
+        * `2024-small-noble`
+            * `latest-small-noble`
+            * `small-noble`
+        * `2024-basic-noble`
+            * `latest-basic-noble`
+            * `basic-noble`
+        * `2024-minimal-noble`
+            * `latest-minimal-noble`
+            * `minimal-noble`
+        * `2024-infraonly-noble`
+            * `latest-infraonly-noble`
+            * `infraonly-noble`
+    * 2024-jammy
+        * `2024-full-jammy`
+            * `latest` `latest-full` `latest-jammy` `latest-full-jammy`
+            * `2024` `full` `jammy`
+            * `2024-full` `2024-jammy` `full-jammy`
+        * `2024-medium-jammy`
+            * `latest-medium` `latest-medium-jammy`
+            * `2024-medium` `medium-jammy`
+        * `2024-small-jammy`
+            * `latest-small` `latest-small-jammy`
+            * `2024-small` `small-jammy`
+        * `2024-basic-jammy`
+            * `latest-basic` `latest-basic-jammy`
+            * `2024-basic` `basic-jammy`
+        * `2024-minimal-jammy`
+            * `latest-minimal` `latest-minimal-jammy`
+            * `2024-minimal` `minimal-jammy`
+        * `2024-infraonly-jammy`
+            * `latest-infraonly` `latest-infraonly-jammy`
+            * `2024-infraonly` `infraonly-jammy`
+* 2023
+    * 2023-jammy
+        * `2023-full-jammy`
+            * `2023`
+            * `2023-full` `2023-jammy`
+        * `2023-medium-jammy`
+            * `2023-medium`
+        * `2023-small-jammy`
+            * `2023-small`
+        * `2023-basic-jammy`
+            * `2023-basic`
+        * `2023-minimal-jammy`
+            * `2023-minimal`
+        * `2023-infraonly-jammy`
+            * `2023-infraonly`
 
 # Notice
 
@@ -55,7 +90,7 @@ Latexmk: All targets (main.xdv main.pdf) are up-to-date
 'xelatex': time = 6.38
 'xdvipdfmx': time = 0.82
 Processing time = 23.93, of which invoked processes = 22.66, other = 1.27.
-Elapsed clock time = 105.81.  <=====
+Elapsed clock time = 105.81.  <==========
 Number of rules run = 5
 ```
 
@@ -71,7 +106,7 @@ Latexmk: Run number 1 of rule 'xdvipdfmx'
 'xelatex': time = 5.23
 'xdvipdfmx': time = 1.47
 Processing time = 22.07, of which invoked processes = 20.11, other = 1.96.
-Elapsed clock time = 22.07.  <=====
+Elapsed clock time = 22.07.  <==========
 Number of rules run = 5
 ```
 
@@ -85,6 +120,6 @@ Latexmk: All targets (main.xdv main.pdf) are up-to-date
 'xelatex': time = 4.79
 'xdvipdfmx': time = 0.71
 Processing time = 18.52, of which invoked processes = 17.38, other = 1.14.
-Elapsed clock time = 18.53.  <=====
+Elapsed clock time = 18.53.  <==========
 Number of rules run = 5
 ```

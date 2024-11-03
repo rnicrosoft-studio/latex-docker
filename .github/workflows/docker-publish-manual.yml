@@ -13,12 +13,11 @@ on:
         required: false
         default: latest
       input_variant:
-        description: "Ubuntu version (noble:24.04 LTS, jammy:22.04 LTS, focal:20.04 LTS) (use jammy on local arm64/Apple Silicon)"
+        description: "Ubuntu version (noble:24.04 LTS, jammy:22.04 LTS) (use jammy on local arm64/Apple Silicon)"
         type: choice
         options: 
           - noble
           - jammy
-          - focal
       input_variant_default:
         description: "Use this Ubuntu version as the default for the TeXLive year version"
         type: boolean
