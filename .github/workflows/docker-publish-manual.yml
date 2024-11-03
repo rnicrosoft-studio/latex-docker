@@ -19,6 +19,9 @@ on:
           - noble
           - jammy
           - focal
+      input_variant_default:
+        description: "Use this Ubuntu version as the default for the TeXLive year version"
+        type: boolean
 
 env:
   # Use docker.io for Docker Hub if empty
@@ -27,7 +30,7 @@ env:
   IMAGE_NAME: ${{ github.repository_owner }}/latex # ${{ github.repository }}
   # Default value of matrix
   SCHEME_DEFAUTL: full
-  VARIANT_DEFAUTL: jammy
+  # VARIANT_DEFAUTL: jammy
 
 
 jobs:
@@ -109,24 +112,24 @@ jobs:
           labels: |
             org.opencontainers.image.title=LaTeX
           tags: |
-            type=schedule,pattern={{date 'YYYYMM'}},enable=${{ inputs.input_variant==env.VARIANT_DEFAUTL && matrix.scheme==env.SCHEME_DEFAUTL }}
-            type=ref,event=branch,enable=${{ inputs.input_variant==env.VARIANT_DEFAUTL && matrix.scheme==env.SCHEME_DEFAUTL }}
-            type=ref,event=tag,enable=${{ inputs.input_variant==env.VARIANT_DEFAUTL && matrix.scheme==env.SCHEME_DEFAUTL }}
+            type=schedule,pattern={{date 'YYYYMM'}},enable=${{ inputs.input_variant_default && matrix.scheme==env.SCHEME_DEFAUTL }}
+            type=ref,event=branch,enable=${{ inputs.input_variant_default && matrix.scheme==env.SCHEME_DEFAUTL }}
+            type=ref,event=tag,enable=${{ inputs.input_variant_default && matrix.scheme==env.SCHEME_DEFAUTL }}
             type=ref,event=pr
             
-            type=raw,enable=${{ env.TEXLIVE_YEAR=='latest' }},value=${{ matrix.scheme }}-${{ inputs.input_variant }}
-            type=raw,enable=${{ env.TEXLIVE_YEAR=='latest' }},value=latest-${{ matrix.scheme }}-${{ inputs.input_variant }}
+            type=raw,enable=${{ inputs.input_year=='latest' }},value=${{ matrix.scheme }}-${{ inputs.input_variant }}
+            type=raw,enable=${{ inputs.input_year=='latest' }},value=latest-${{ matrix.scheme }}-${{ inputs.input_variant }}
             type=raw,enable=true,value=${{ env.TEXLIVE_YEAR }}-${{ matrix.scheme }}-${{ inputs.input_variant }}
 
-            type=raw,enable=${{ inputs.input_variant==env.VARIANT_DEFAUTL && env.TEXLIVE_YEAR=='latest' }},value=${{ matrix.scheme }}
-            type=raw,enable=${{ inputs.input_variant==env.VARIANT_DEFAUTL && env.TEXLIVE_YEAR=='latest' }},value=latest-${{ matrix.scheme }}
-            type=raw,enable=${{ inputs.input_variant==env.VARIANT_DEFAUTL }},value=${{ env.TEXLIVE_YEAR }}-${{ matrix.scheme }}
-            type=raw,enable=${{ matrix.scheme==env.SCHEME_DEFAUTL && env.TEXLIVE_YEAR=='latest' }},value=${{ inputs.input_variant }}
-            type=raw,enable=${{ matrix.scheme==env.SCHEME_DEFAUTL && env.TEXLIVE_YEAR=='latest' }},value=latest-${{ inputs.input_variant }}
+            type=raw,enable=${{ inputs.input_variant_default && inputs.input_year=='latest' }},value=${{ matrix.scheme }}
+            type=raw,enable=${{ inputs.input_variant_default && inputs.input_year=='latest' }},value=latest-${{ matrix.scheme }}
+            type=raw,enable=${{ inputs.input_variant_default }},value=${{ env.TEXLIVE_YEAR }}-${{ matrix.scheme }}
+            type=raw,enable=${{ matrix.scheme==env.SCHEME_DEFAUTL && inputs.input_year=='latest' }},value=${{ inputs.input_variant }}
+            type=raw,enable=${{ matrix.scheme==env.SCHEME_DEFAUTL && inputs.input_year=='latest' }},value=latest-${{ inputs.input_variant }}
             type=raw,enable=${{ matrix.scheme==env.SCHEME_DEFAUTL }},value=${{ env.TEXLIVE_YEAR }}-${{ inputs.input_variant }}
 
-            type=raw,enable=${{ matrix.variant==env.VARIANT_DEFAUTL && matrix.scheme==env.SCHEME_DEFAUTL && env.TEXLIVE_YEAR=='latest' }},value=latest
-            type=raw,enable=${{ matrix.variant==env.VARIANT_DEFAUTL && matrix.scheme==env.SCHEME_DEFAUTL }},value=${{ env.TEXLIVE_YEAR }}
+            type=raw,enable=${{ inputs.input_variant_default && matrix.scheme==env.SCHEME_DEFAUTL && inputs.input_year=='latest' }},value=latest
+            type=raw,enable=${{ inputs.input_variant_default && matrix.scheme==env.SCHEME_DEFAUTL }},value=${{ env.TEXLIVE_YEAR }}
       
       # Build and push Docker image with Buildx (don't push on PR)
       # https://github.com/docker/build-push-action
