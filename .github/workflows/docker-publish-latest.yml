@@ -30,7 +30,7 @@ env:
   IMAGE_NAME: ${{ github.repository_owner }}/latex # ${{ github.repository }}
   # Default value of matrix
   SCHEME_DEFAUTL: full
-  VARIANT_DEFAUTL: jammy
+  VARIANT_DEFAUTL: noble
 
 
 jobs:
