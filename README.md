@@ -78,10 +78,11 @@ docker pull ghcr.io/rnicrosoft-studio/latex:<TAG>
 DO NOT leave LaTeX source files on Windows disk and use this image with WSL to compile!
 I/O performance on mounted drive is [extremely bad](https://learn.microsoft.com/en-us/windows/wsl/filesystems#file-storage-and-performance-across-file-systems).
 
-For the reference, here is the compilation benchmark of [a 50 pages PDF](https://github.com/sjtug/SJTUThesis) with different methods on the same computer:
+For the reference, here is a compilation benchmark of [a 50 pages PDF](https://github.com/sjtug/SJTUThesis) with different methods on the same computer:
 
-## Source in Windows with WSL devcontainer
-
+<details>
+<summary>Source in Windows filesystem, use LaTex compiler in this image with WSL devcontainer: 105.81 s</summary>
+   
 ```
 Latexmk: All targets (main.xdv main.pdf) are up-to-date
 'xelatex': time = 6.64
@@ -93,8 +94,10 @@ Processing time = 23.93, of which invoked processes = 22.66, other = 1.27.
 Elapsed clock time = 105.81.  <==========
 Number of rules run = 5
 ```
+</details>
 
-## Source in Windows with Compile.bat
+<details>
+<summary>Source in Windows filesystem, use LaTex compiler in Windows: 22.07 s</summary>
 
 ```
 SyncTeX written on main.synctex.gz.
@@ -109,8 +112,10 @@ Processing time = 22.07, of which invoked processes = 20.11, other = 1.96.
 Elapsed clock time = 22.07.  <==========
 Number of rules run = 5
 ```
+</details>
 
-## Source in WSL with WSL devcontainer
+<details>
+<summary>Source in WSL filesystem, use LaTex compiler in this image with WSL devcontainer: 18.53 s</summary>
 
 ```
 Latexmk: All targets (main.xdv main.pdf) are up-to-date
@@ -123,3 +128,4 @@ Processing time = 18.52, of which invoked processes = 17.38, other = 1.14.
 Elapsed clock time = 18.53.  <==========
 Number of rules run = 5
 ```
+</details>
