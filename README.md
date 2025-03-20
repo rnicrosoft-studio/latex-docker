@@ -1,5 +1,7 @@
 # latex-docker
-🐳 Docker Image of TeXLive based on Ubuntu
+🐳 Docker Image of TeXLive based on Ubuntu, both latest (monthly automatically updated) and historical versions.
+
+Save the long night from the installation of thousands of TeXLive packages!
 
 # Usage
 ```sh
@@ -7,81 +9,34 @@ docker pull ghcr.io/rnicrosoft-studio/latex:<TAG>
 ```
 
 # Supported tags
-`<YEAR>-<SCHEME>-<VARIANT>`
+* `latest`: latest TeXLive version on `full` scheme. Ubuntu variant can not be specified, but also often the latest.
+* `<YEAR>-<SCHEME>-<VARIANT>`: TeXLive `<YEAR>` (YYYY) version on `<SCHEME>` scheme based on Ubuntu `<VARIANT>`.
+   * `<YEAR>`
+   * `<SCHEME>`
+   * `<VARIANT>`
+   * `<YEAR>-<SCHEME>`
+   * `<YEAR>-<VARIANT>`
+   * `<SCHEME>-<VARIANT>`
 
 |  | Default | Options |
 | -- | -- | -- |
-| `<YEAR>` | latest / 2024 | latest, 2024, 2023 |
+| `<YEAR>` | latest | latest, YYYY |
 | `<SCHEME>` | full | full, medium, small, basic, minimal, infraonly |
-| `<VARIANT>` | jammy | noble, jammy |
+| `<VARIANT>` |  | noble, jammy |
 
+* `<COMPILATION_TIME>`: historical TeXLive version on `full` scheme when `<COMPILATION_TIME>` (YYYYMM). Ubuntu variant can not be specified.
 
-* 2024
-    * 2024-noble
-        * `2024-full-noble`
-            * `latest-noble` `latest-full-noble`
-            * `2024` `noble`
-            * `2024-noble` `full-noble`
-        * `2024-medium-noble`
-            * `latest-medium-noble`
-            * `medium-noble`
-        * `2024-small-noble`
-            * `latest-small-noble`
-            * `small-noble`
-        * `2024-basic-noble`
-            * `latest-basic-noble`
-            * `basic-noble`
-        * `2024-minimal-noble`
-            * `latest-minimal-noble`
-            * `minimal-noble`
-        * `2024-infraonly-noble`
-            * `latest-infraonly-noble`
-            * `infraonly-noble`
-    * 2024-jammy
-        * `2024-full-jammy`
-            * `latest` `latest-full` `latest-jammy` `latest-full-jammy`
-            * `2024` `full` `jammy`
-            * `2024-full` `2024-jammy` `full-jammy`
-        * `2024-medium-jammy`
-            * `latest-medium` `latest-medium-jammy`
-            * `2024-medium` `medium-jammy`
-        * `2024-small-jammy`
-            * `latest-small` `latest-small-jammy`
-            * `2024-small` `small-jammy`
-        * `2024-basic-jammy`
-            * `latest-basic` `latest-basic-jammy`
-            * `2024-basic` `basic-jammy`
-        * `2024-minimal-jammy`
-            * `latest-minimal` `latest-minimal-jammy`
-            * `2024-minimal` `minimal-jammy`
-        * `2024-infraonly-jammy`
-            * `latest-infraonly` `latest-infraonly-jammy`
-            * `2024-infraonly` `infraonly-jammy`
-* 2023
-    * 2023-jammy
-        * `2023-full-jammy`
-            * `2023`
-            * `2023-full` `2023-jammy`
-        * `2023-medium-jammy`
-            * `2023-medium`
-        * `2023-small-jammy`
-            * `2023-small`
-        * `2023-basic-jammy`
-            * `2023-basic`
-        * `2023-minimal-jammy`
-            * `2023-minimal`
-        * `2023-infraonly-jammy`
-            * `2023-infraonly`
+For the whole list of supported tags, see [this page](https://github.com/rnicrosoft-studio/latex-docker/pkgs/container/latex/versions?filters%5Bversion_type%5D=tagged).
 
 # Notice
 
-DO NOT leave LaTeX source files on Windows disk and use this image with WSL to compile!
+DO NOT leave LaTeX source files in Windows filesystem and use this image with WSL to compile!
 I/O performance on mounted drive is [extremely bad](https://learn.microsoft.com/en-us/windows/wsl/filesystems#file-storage-and-performance-across-file-systems).
 
 For the reference, here is a compilation benchmark of [a 50 pages PDF](https://github.com/sjtug/SJTUThesis) with different methods on the same computer:
 
 <details>
-<summary>Source in Windows filesystem, use LaTex compiler in this image with WSL devcontainer: 105.81 s</summary>
+<summary>Source in Windows filesystem, use this image with WSL devcontainer: 105.81 s 🚫</summary>
    
 ```
 Latexmk: All targets (main.xdv main.pdf) are up-to-date
@@ -97,7 +52,7 @@ Number of rules run = 5
 </details>
 
 <details>
-<summary>Source in Windows filesystem, use LaTex compiler in Windows: 22.07 s</summary>
+<summary>Source in Windows filesystem, use Windows LaTex compiler: 22.07 s 👎</summary>
 
 ```
 SyncTeX written on main.synctex.gz.
@@ -115,7 +70,7 @@ Number of rules run = 5
 </details>
 
 <details>
-<summary>Source in WSL filesystem, use LaTex compiler in this image with WSL devcontainer: 18.53 s</summary>
+<summary>Source in WSL filesystem, use this image with WSL devcontainer: 18.53 s ✨</summary>
 
 ```
 Latexmk: All targets (main.xdv main.pdf) are up-to-date
