@@ -46,7 +46,7 @@ jobs:
 
     strategy:
       matrix:
-        scheme: # https://tug.org/texlive/doc/texlive-en/texlive-en.html#x1-26025r8
+        scheme: # https://tug.org/texlive/doc/texlive-en/texlive-en.html#x1-24027r6
           - full      # a [ ] full scheme (everything) 
           - medium    # b [ ] medium scheme (small + more packages and languages) 
           - small     # c [ ] small scheme (basic + xetex, metapost, a few languages) 
