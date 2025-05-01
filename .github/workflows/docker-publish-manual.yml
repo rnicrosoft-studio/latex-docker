@@ -22,6 +22,8 @@ on:
         description: "Use this Ubuntu version as the default for the TeXLive year version"
         type: boolean
 
+run-name: Docker (manual) - ${{ format('year:{0}|variant:{1}|variant_default:{2}', inputs.input_year, inputs.input_variant, inputs.input_variant_default, ) }}
+
 env:
   # Use docker.io for Docker Hub if empty
   REGISTRY: ghcr.io
