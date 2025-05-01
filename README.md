@@ -21,8 +21,8 @@ docker pull ghcr.io/rnicrosoft-studio/latex:<TAG>
 |  | Default | Options |
 | -- | -- | -- |
 | `<YEAR>` | latest | latest, YYYY |
-| `<SCHEME>` | full | full, medium, small, basic, minimal, infraonly |
-| `<VARIANT>` |  | noble, jammy |
+| `<SCHEME>` | full | [full, medium, small, basic, minimal, infraonly](https://tug.org/texlive/doc/texlive-en/texlive-en.html#x1-24027r6) |
+| `<VARIANT>` |  | [noble, jammy](https://wiki.ubuntu.com/Releases) |
 
 * `<COMPILATION_TIME>`: historical TeXLive version on `full` scheme when `<COMPILATION_TIME>` (YYYYMM). Ubuntu variant can not be specified.
 
