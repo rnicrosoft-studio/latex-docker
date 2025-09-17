@@ -171,4 +171,7 @@ jobs:
       actions: write
     steps:
       - uses: actions/checkout@v4
-      - uses: gautamkrishnar/keepalive-workflow@v2
+      # - uses: gautamkrishnar/keepalive-workflow@v2 # prohibited
+      - uses: entepotenz/keep-github-actions-alive-min-dependencies@v1
+        with:
+          TIME_ELAPSED_THRESHOLD_IN_DAYS: 20
