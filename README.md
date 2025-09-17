@@ -1,4 +1,6 @@
 # latex-docker
+[![Build (latest)](https://github.com/rnicrosoft-studio/latex-docker/actions/workflows/docker-publish-latest.yml/badge.svg)](https://github.com/rnicrosoft-studio/latex-docker/actions/workflows/docker-publish-latest.yml)
+
 🐳 Docker Image of TeXLive based on Ubuntu, both latest (monthly automatically updated) and historical versions.
 
 Save the long night from the installation of thousands of TeXLive packages!
