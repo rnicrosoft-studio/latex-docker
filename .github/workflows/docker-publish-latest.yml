@@ -168,7 +168,8 @@ jobs:
     if: github.event_name == 'schedule'
     runs-on: ubuntu-latest
     permissions:
-      actions: write
+      # actions: write
+      contents: write
     steps:
       - uses: actions/checkout@v4
       # - uses: gautamkrishnar/keepalive-workflow@v2 # prohibited
