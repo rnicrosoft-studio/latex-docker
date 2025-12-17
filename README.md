@@ -30,10 +30,11 @@ docker pull ghcr.io/rnicrosoft-studio/latex:<TAG>
 
 For the whole list of supported tags, see [this page](https://github.com/rnicrosoft-studio/latex-docker/pkgs/container/latex/versions?filters%5Bversion_type%5D=tagged).
 
-# Notice
+# Appendix
 
-DO NOT leave LaTeX source files in Windows filesystem and use this image with WSL to compile!
-I/O performance on mounted drive is [extremely bad](https://learn.microsoft.com/en-us/windows/wsl/filesystems#file-storage-and-performance-across-file-systems).
+> [!WARNING]
+> DO NOT leave LaTeX source files in Windows filesystem and use this image with WSL to compile!
+> I/O performance on mounted drives is [extremely bad](https://learn.microsoft.com/en-us/windows/wsl/filesystems#file-storage-and-performance-across-file-systems).
 
 For the reference, here is a compilation benchmark of [a 50 pages PDF](https://github.com/sjtug/SJTUThesis) with different methods on the same computer:
 
