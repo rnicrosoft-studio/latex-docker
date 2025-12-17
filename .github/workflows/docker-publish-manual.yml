@@ -13,9 +13,10 @@ on:
         required: false
         default: latest
       input_variant:
-        description: "Ubuntu version (noble:24.04 LTS, jammy:22.04 LTS) (use jammy on local arm64/Apple Silicon)"
+        description: "Ubuntu version (resolute:26.04 LTS, noble:24.04 LTS, jammy:22.04 LTS)"
         type: choice
         options: 
+          - resolute
           - noble
           - jammy
       input_variant_default:
