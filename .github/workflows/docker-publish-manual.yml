@@ -145,7 +145,7 @@ jobs:
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           build-args: |
-            TEXLIVE_YEAR=${{ env.TEXLIVE_YEAR }}
+            TEXLIVE_YEAR=${{ inputs.input_year }}
             SCHEME=${{ matrix.scheme }}
             VARIANT=${{ inputs.input_variant }}
           labels: ${{ steps.meta.outputs.labels }}
