@@ -1,4 +1,4 @@
-# noble(24.04 LTS), jammy(22.04 LTS)
+# resolute(26.04 LTS), noble(24.04 LTS), jammy(22.04 LTS)
 ARG VARIANT
 FROM buildpack-deps:${VARIANT}-curl
 

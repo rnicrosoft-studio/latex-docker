@@ -58,9 +58,10 @@ jobs:
           # -           # i [ ] GUST TeX Live scheme 
           # -           # j [ ] teTeX scheme (more than medium, but nowhere near full) 
           # -           # k [ ] custom selection of collections
-        variant:
-          - jammy     # 22.04 LTS
-          - noble     # 24.04 LTS
+        variant: # https://wiki.ubuntu.com/Releases
+          - resolute  # 26.04 LTS (EOL: 2031)
+          - noble     # 24.04 LTS (EOL: 2029)
+          - jammy     # 22.04 LTS (EOL: 2027)
     name: Build TeXLive [${{ matrix.scheme }}-${{ matrix.variant }}]
 
     steps:
